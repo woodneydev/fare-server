@@ -4,12 +4,22 @@ const list = () => {
     return knex("accounts");
   };
 
-const search = (email) => {
+const findUserByEmail = (email) => {
+  console.log(email)
   return knex("accounts")
     .where({email})
     .first()
 }
 
+const add = (user) => {
+  return knex("accounts")
+  .insert(user)
+  .then((result) => {
+    return knex("accounts")
+      .where({ id: result[0] })
+  })
+}
+
 module.exports = {
-    list, search
+    list, findUserByEmail, add, 
 }
