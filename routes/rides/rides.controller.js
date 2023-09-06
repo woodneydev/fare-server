@@ -12,9 +12,22 @@ const hasReqRidesProp = hasRequiredProperties(newRideValidProps);
 
 // =============== Route Handlers ===============
 
+const read = async (req, res, next) => {
+    const {id} = req.params;
+    try {
+        const ride = await service.getSpecificRide(id);
+        if (!ride) {
+            return next({status: 400, message: "Invalid id"});
+        }
+        res.status(200).json({data: ride})
+    } catch (error) {
+        console.log(error)
+        return next({status: 500, message: "Internal Server Error"});
+    }
+}
+
 const list = async (req, res, next) => {
     const {id} = req.params;
-    console.log(id)
     try {
         const user = await service.getRiderRides(id)
         console.log("this is user:", user)
@@ -29,7 +42,7 @@ const list = async (req, res, next) => {
 
 const listPendingRides = async (req, res, next) => {
     const {id} = req.params;
-    console.log(id)
+    
     try {
         const user = await service.getRiderRidesPending(id)
         console.log("this is user:", user)
@@ -60,6 +73,7 @@ const postRide = async (req, res, next) => {
 }
 
 module.exports = {
+    read,
     list: [ list],
     listPendingRides,
     post: [postRide]
