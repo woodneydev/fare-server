@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 
-function generateSeedData() {
+function generateAccountsSeedData() {
   const users = [
     {first_name: 'John', last_name: 'Doe', email: 'john1@example.com', password: 'password123', phone: '123-456-7890', rider_rating: 4, is_driver: true, profile_picture: 'john1.jpg', address: '123 Elm St.'},
     {first_name: 'Jane', last_name: 'Smith', email: 'jane2@example.com', password: 'password456', phone: '123-456-7891', rider_rating: 5, profile_picture: 'jane2.jpg', address: '124 Elm St.'},
@@ -19,14 +19,13 @@ function generateSeedData() {
     {first_name: 'Mike', last_name: 'Morrison', email: 'mike15@example.com', password: 'mikepass', phone: '777-456-7890', rider_rating: 4, is_driver: true, address: '139 Elm St.'}
   ];
 
-  for (let user of users) {
+  users.forEach(user => {
+    user.is_driver = true;
     user.password = bcrypt.hashSync(user.password);
-  }
+  });
 
   return users;
 }
 
-const accountsData = generateSeedData();
-
-
+const accountsData = generateAccountsSeedData();
 module.exports = accountsData;
