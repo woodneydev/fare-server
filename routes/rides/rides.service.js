@@ -5,7 +5,7 @@ const getSpecificRide = (id) => {
         .join("driver_profiles as d", "r.driver_id", "d.driver_id")
         .join("accounts as a", "a.id", "d.driver_id")
         .select("r.id as ride_id", "r.rider_id", "r.start_location", "r.end_location", "r.start_time", "r.end_time", "r.rider_proposed_fare", "a.first_name as driver_name", "d.driver_rating", "r.fare")
-        .where({id})
+        .where({"r.id": id, status: "unbooked"})
         .andWhere({status: "unbooked"})
         .first()
 }
@@ -15,7 +15,7 @@ const getRiderRides = (id) => {
         .join("driver_profiles as d", "r.driver_id", "d.driver_id")
         .join("accounts as a", "a.id", "d.driver_id")
         .select("r.id as ride_id", "r.rider_id", "r.start_location", "r.end_location", "r.start_time", "r.end_time", "r.rider_proposed_fare", "a.first_name as driver_name", "d.driver_rating", "r.fare")
-        .where({"r.id": id, status: "unbooked"})
+        .where({rider_id: id})
         .andWhere({status: "booked"})
 }
 
