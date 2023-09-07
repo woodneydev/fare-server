@@ -4,7 +4,7 @@ const controller = require("./rides.controller");
 
 router.route("/").post(controller.post).all(methodNotAllowed);
 
-router.route("/specific/:id").get(controller.read).all(methodNotAllowed);
+router.route("/specific/:id").get(controller.read).delete(controller.deleteRide).put(controller.update).all(methodNotAllowed);
 
 router.route("/:id").get(controller.listPendingRides).all(methodNotAllowed);
 

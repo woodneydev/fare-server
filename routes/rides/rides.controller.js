@@ -14,14 +14,15 @@ const hasReqRidesProp = hasRequiredProperties(newRideValidProps);
 
 const read = async (req, res, next) => {
     const {id} = req.params;
+    console.log(id)
     try {
         const ride = await service.getSpecificRide(id);
+        console.log(ride)
         if (!ride) {
             return next({status: 400, message: "Invalid id"});
         }
         res.status(200).json({data: ride})
     } catch (error) {
-        console.log(error)
         return next({status: 500, message: "Internal Server Error"});
     }
 }
@@ -45,7 +46,7 @@ const listPendingRides = async (req, res, next) => {
     
     try {
         const user = await service.getRiderRidesPending(id)
-        console.log("this is user:", user)
+    
         if (!user) {
             return next({status: 400, message: "Invalid id"});
         }
@@ -57,7 +58,6 @@ const listPendingRides = async (req, res, next) => {
 
 const postRide = async (req, res, next) => {
     const ride = req.body.data
-    console.log("req body", req.body.data)
 
     try {
         const data = await service.postNewRide(ride)
@@ -72,9 +72,37 @@ const postRide = async (req, res, next) => {
     }
 }
 
+const deleteRide = async (req, res, next) => {
+    const {id} = req.params;
+        res.status(200).json({data: "resource deleted"})
+    try {
+        const data = await service.deleteRide(id);
+    } catch (error) {
+        console.log(error)
+        return next({status: 500, message: "Internal Server Error"});
+    }
+
+}
+
+const update = async (req, res, next) => {
+    console.log("controller, updating...")
+    const {id} = req.params;
+    const edited = req.body.data
+
+    try {
+        const updated = await service.update(id, edited)
+        res.status(200).json({data: updated})
+    } catch (error) {
+        console.log(error)
+        return next({status: 500, message: "Internal Server Error"});
+    }
+}
+
 module.exports = {
     read,
     list: [ list],
     listPendingRides,
-    post: [postRide]
+    post: [postRide],
+    deleteRide,
+    update
 }
