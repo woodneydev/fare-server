@@ -77,6 +77,22 @@ const update = (id, edited) => {
           .where({ id })
       })
 }
+
+const getUnbooked = (id) => {
+    return knex("rides")
+        .whereNot({rider_id: id}) 
+        .andWhere({status: "unbooked"})
+        .orderBy('created_at', 'desc');
+}
+
+const assignRide = (driver_id, ride_id) => {
+    return knex("rides")
+        .where({ id: ride_id })
+        .update({ 
+            driver_id: driver_id,
+            status: "booked"
+        });
+}
   
 module.exports = {
     getRiderRides,
@@ -84,5 +100,7 @@ module.exports = {
     postNewRide,
     getSpecificRide,
     update,
-    deleteRide
+    deleteRide,
+    getUnbooked,
+    assignRide
 }
