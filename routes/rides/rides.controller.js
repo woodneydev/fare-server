@@ -98,41 +98,11 @@ const update = async (req, res, next) => {
     }
 }
 
-const getAllButUsers = async (req, res, next) => {
-    const {id} = req.params;
-    try {
-        const rides = await service.getUnbooked(id)
-        if (!rides) {
-            return next({status: 400, message: "Invalid id"});
-        }
-        res.status(200).json({data: rides})
-    } catch (error) {
-        return next({status: 500, message: "Internal Server Error"});
-    }
-}
-
-const bookRide = async (req, res, next) => {
-    const {ride_id, driver_id} = req.body.data
-
-    try {
-        const data = await service.assignRide(driver_id, ride_id)
-        if(!data) {
-            return next({status: 400, message: "Invalid id"});
-        }
-        res.status(200).json({data})
-    } catch (error) {
-        console.log(error)
-        return next({status: 500, message: "Internal Server Error"});
-    }
-}
-
 module.exports = {
     read,
     list: [ list],
     listPendingRides,
     post: [postRide],
     deleteRide,
-    update,
-    getAllButUsers,
-    bookRide
+    update
 }
